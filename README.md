@@ -1,2 +1,2 @@
-# POS
+# Tech-Sales-POS
 pos software
