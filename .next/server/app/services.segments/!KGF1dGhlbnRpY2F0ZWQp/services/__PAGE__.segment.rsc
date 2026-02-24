@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
 2:I[50859,["/_next/static/chunks/d0c2bc895e796f27.js","/_next/static/chunks/ac4af8493eb28d0b.js"],"ClientPageRoot"]
-3:I[34457,["/_next/static/chunks/3a2750ccd9fb8ee0.js","/_next/static/chunks/76a477624cb97905.js","/_next/static/chunks/bfa039e8e0baf6f9.js","/_next/static/chunks/e7ba94d125cb1605.js","/_next/static/chunks/c38fb10525e25dbf.js","/_next/static/chunks/9727e4e040083f56.js","/_next/static/chunks/6eb55c530f10948d.js","/_next/static/chunks/6a4fd1190f347750.js","/_next/static/chunks/10a07f65e79386a9.js"],"default"]
+3:I[34457,["/_next/static/chunks/3a2750ccd9fb8ee0.js","/_next/static/chunks/76a477624cb97905.js","/_next/static/chunks/bfa039e8e0baf6f9.js","/_next/static/chunks/e7ba94d125cb1605.js","/_next/static/chunks/c38fb10525e25dbf.js","/_next/static/chunks/9727e4e040083f56.js","/_next/static/chunks/d237c4fe78deaf15.js","/_next/static/chunks/6a4fd1190f347750.js","/_next/static/chunks/10a07f65e79386a9.js"],"default"]
 6:I[43091,["/_next/static/chunks/d0c2bc895e796f27.js","/_next/static/chunks/ac4af8493eb28d0b.js"],"OutletBoundary"]
 7:"$Sreact.suspense"
-0:{"buildId":"ELzLKqhjYLLbYtt426lVl","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/_next/static/chunks/6a4fd1190f347750.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/10a07f65e79386a9.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"4vjOz54Go6vVXw1ofkqge","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/_next/static/chunks/6a4fd1190f347750.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/10a07f65e79386a9.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
 4:{}
 5:{}
 8:null

@@ -1,4 +1,4 @@
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   LayoutDashboard,
@@ -40,6 +40,7 @@ interface AppSidebarProps {
 
 export function AppSidebar({ staffUser }: AppSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, logout } = useAuth();
 
   const role = staffUser?.role || "sales";
@@ -108,7 +109,7 @@ export function AppSidebar({ staffUser }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-3 px-2 py-1 relative group">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary font-bold text-lg shadow-sm border border-primary/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-md">
@@ -131,14 +132,13 @@ export function AppSidebar({ staffUser }: AppSidebarProps) {
               {filterByRole(mainNavItems).map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
-                    asChild
                     isActive={pathname === item.url}
+                    tooltip={item.title}
                     data-testid={`nav-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
+                    onClick={() => router.push(item.url)}
                   >
-                    <Link href={item.url}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </Link>
+                    <item.icon className="h-4 w-4" />
+                    <span>{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -154,14 +154,13 @@ export function AppSidebar({ staffUser }: AppSidebarProps) {
                 {filterByRole(inventoryNavItems).map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
-                      asChild
                       isActive={pathname === item.url}
+                      tooltip={item.title}
                       data-testid={`nav-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
+                      onClick={() => router.push(item.url)}
                     >
-                      <Link href={item.url}>
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.title}</span>
-                      </Link>
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -178,14 +177,13 @@ export function AppSidebar({ staffUser }: AppSidebarProps) {
                 {filterByRole(adminNavItems).map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
-                      asChild
                       isActive={pathname === item.url}
+                      tooltip={item.title}
                       data-testid={`nav-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
+                      onClick={() => router.push(item.url)}
                     >
-                      <Link href={item.url}>
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.title}</span>
-                      </Link>
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
