@@ -1,0 +1,3 @@
+module.exports=[25138,a=>{"use strict";var b=a.i(76301),c=a.i(16659);function d({children:a}){return(0,b.jsx)(c.motion.div,{initial:{opacity:0,y:8,filter:"blur(4px)"},animate:{opacity:1,y:0,filter:"blur(0px)"},transition:{duration:.4,ease:[.22,1,.36,1]},style:{width:"100%",height:"100%"},children:a})}a.s(["default",()=>d])}];
+
+//# sourceMappingURL=Desktop_PROJECT%202026_SiliconPOS_src_app_%28authenticated%29_template_tsx_d75a46a6._.js.map

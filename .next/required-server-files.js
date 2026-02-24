@@ -297,8 +297,8 @@ self.__SERVER_FILES_MANIFEST={
     },
     "distDirRoot": ".next"
   },
-  "appDir": "C:\\Users\\Jerry\\Desktop\\PROJECT 2026\\POS",
-  "relativeAppDir": "Desktop\\PROJECT 2026\\POS",
+  "appDir": "C:\\Users\\Jerry\\Desktop\\PROJECT 2026\\SiliconPOS",
+  "relativeAppDir": "Desktop\\PROJECT 2026\\SiliconPOS",
   "files": [
     ".next\\routes-manifest.json",
     ".next\\server\\pages-manifest.json",

@@ -421,7 +421,7 @@ export default function Products() {
                             <Input
                               {...field}
                               placeholder="e.g. U6-LITE-US"
-                              className="font-mono text-sm"
+                              className="font-mono text-sm h-11 bg-muted/40 border-border/50 focus:bg-background transition-colors"
                               data-testid="input-product-sku"
                             />
                           </FormControl>
@@ -441,7 +441,7 @@ export default function Products() {
                             defaultValue={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger data-testid="select-product-category">
+                              <SelectTrigger className="h-11 bg-muted/40 border-border/50 focus:bg-background transition-colors" data-testid="select-product-category">
                                 <SelectValue placeholder="Select category" />
                               </SelectTrigger>
                             </FormControl>
@@ -468,7 +468,7 @@ export default function Products() {
                             {...field}
                             placeholder="Brief description of the product..."
                             rows={3}
-                            className="resize-none"
+                            className="resize-none bg-muted/40 border-border/50 focus:bg-background transition-colors"
                             data-testid="input-product-description"
                           />
                         </FormControl>
@@ -498,7 +498,7 @@ export default function Products() {
                                 type="number"
                                 step="0.01"
                                 placeholder="0.00"
-                                className="pl-7 font-semibold"
+                                className="pl-7 font-semibold h-11 bg-muted/40 border-border/50 focus:bg-background transition-colors"
                                 data-testid="input-product-price"
                               />
                             </div>
@@ -522,7 +522,7 @@ export default function Products() {
                                 type="number"
                                 step="0.01"
                                 placeholder="0.00"
-                                className="pl-7"
+                                className="pl-7 h-11 bg-muted/40 border-border/50 focus:bg-background transition-colors"
                                 data-testid="input-product-cost"
                               />
                             </div>
@@ -551,6 +551,7 @@ export default function Products() {
                               {...field}
                               type="number"
                               min="0"
+                              className="h-11 bg-muted/40 border-border/50 focus:bg-background transition-colors"
                               onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                               data-testid="input-product-stock"
                             />
@@ -573,7 +574,7 @@ export default function Products() {
                                 {...field}
                                 type="number"
                                 min="0"
-                                className="pl-10"
+                                className="pl-10 h-11 bg-muted/40 border-border/50 focus:bg-background transition-colors"
                                 onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                                 data-testid="input-product-threshold"
                               />

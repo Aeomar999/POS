@@ -1,3 +1,12 @@
 {
-  "/page": "app/page.js"
+  "/(authenticated)/dashboard/page": "app/(authenticated)/dashboard/page.js",
+  "/(authenticated)/pos/page": "app/(authenticated)/pos/page.js",
+  "/(authenticated)/settings/page": "app/(authenticated)/settings/page.js",
+  "/api/auth/user/route": "app/api/auth/user/route.js",
+  "/api/dashboard/stats/route": "app/api/dashboard/stats/route.js",
+  "/api/notifications/route": "app/api/notifications/route.js",
+  "/api/products/low-stock/route": "app/api/products/low-stock/route.js",
+  "/api/products/route": "app/api/products/route.js",
+  "/api/services/route": "app/api/services/route.js",
+  "/api/settings/route": "app/api/settings/route.js"
 }

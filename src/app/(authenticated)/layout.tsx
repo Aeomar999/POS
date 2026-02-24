@@ -6,8 +6,12 @@ import { useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShieldX, Search } from "lucide-react";
+import { ShieldX, Search, Bell, Settings } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { NotificationBell } from "@/components/notification-bell";
 
 export default function AuthenticatedLayout({
   children,
@@ -96,11 +100,34 @@ export default function AuthenticatedLayout({
           <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 z-10 sticky top-0 shadow-sm">
             <SidebarTrigger className="-ml-2" />
             <div className="flex flex-1 items-center justify-between">
-              <h1 className="text-lg font-semibold font-heading tracking-tight capitalize text-foreground/90">
+              <h1 className="text-xl font-bold font-heading tracking-tight capitalize text-foreground">
                 {getPageTitle()}
               </h1>
-              <div className="flex items-center gap-4">
-                {/* Header Actions placeholder */}
+              <div className="flex items-center gap-3">
+                <div className="hidden md:flex relative group w-64">
+                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <Input
+                    type="search"
+                    placeholder="Search anywhere..."
+                    className="w-full pl-9 pr-4 bg-muted/40 border-border/50 focus-visible:bg-background transition-all shadow-none rounded-full"
+                  />
+                  <div className="absolute right-2.5 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-center">
+                    <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                      <span className="text-xs">⌘</span>K
+                    </kbd>
+                  </div>
+                </div>
+                <NotificationBell />
+                <ThemeToggle />
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="rounded-full hover:bg-muted/50 h-9 w-9 border border-border/10 shadow-sm transition-all text-muted-foreground hover:text-foreground"
+                  onClick={() => router.push('/settings')}
+                >
+                  <Settings className="h-4 w-4" />
+                  <span className="sr-only">Settings</span>
+                </Button>
               </div>
             </div>
           </header>

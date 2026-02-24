@@ -90,6 +90,18 @@
       "namedRegex": "^/api/logout(?:/)?$"
     },
     {
+      "page": "/api/notifications",
+      "regex": "^/api/notifications(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/notifications(?:/)?$"
+    },
+    {
+      "page": "/api/notifications/read",
+      "regex": "^/api/notifications/read(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/notifications/read(?:/)?$"
+    },
+    {
       "page": "/api/products",
       "regex": "^/api/products(?:/)?$",
       "routeKeys": {},
@@ -124,6 +136,12 @@
       "regex": "^/api/services(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/services(?:/)?$"
+    },
+    {
+      "page": "/api/settings",
+      "regex": "^/api/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/settings(?:/)?$"
     },
     {
       "page": "/api/staff",
@@ -172,6 +190,12 @@
       "regex": "^/services(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/services(?:/)?$"
+    },
+    {
+      "page": "/settings",
+      "regex": "^/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/settings(?:/)?$"
     },
     {
       "page": "/staff",

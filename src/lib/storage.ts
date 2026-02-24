@@ -53,6 +53,15 @@ export interface IStorage {
 
   // Reports
   getSalesReport(period: string): Promise<any>;
+
+  // Settings
+  getUserSettings(userId: string): Promise<any | undefined>;
+  createUserSettings(userId: string, data?: any): Promise<any>;
+  updateUserSettings(userId: string, data: any): Promise<any>;
+
+  // Notifications
+  getNotifications(userId: string, limit?: number): Promise<any[]>;
+  markNotificationAsRead(userId: string, notificationId?: string): Promise<{ count: number }>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -393,6 +402,50 @@ export class DatabaseStorage implements IStorage {
       topProducts,
       recentSales: salesData.slice(0, 20),
     };
+  }
+
+  // Settings
+  async getUserSettings(userId: string) {
+    return prisma.userSettings.findUnique({ where: { userId } }) || undefined;
+  }
+
+  async createUserSettings(userId: string, data?: any) {
+    return prisma.userSettings.create({
+      data: { userId, ...data }
+    });
+  }
+
+  async updateUserSettings(userId: string, data: any) {
+    return prisma.userSettings.upsert({
+      where: { userId },
+      update: data,
+      create: { userId, ...data }
+    });
+  }
+
+  // Notifications
+  async getNotifications(userId: string, limit: number = 20) {
+    return prisma.notification.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+      take: limit
+    });
+  }
+
+  async markNotificationAsRead(userId: string, notificationId?: string) {
+    if (notificationId) {
+      const res = await prisma.notification.updateMany({
+        where: { id: notificationId, userId },
+        data: { isRead: true }
+      });
+      return { count: res.count };
+    } else {
+      const res = await prisma.notification.updateMany({
+        where: { userId, isRead: false },
+        data: { isRead: true }
+      });
+      return { count: res.count };
+    }
   }
 }
 

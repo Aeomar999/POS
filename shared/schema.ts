@@ -34,6 +34,46 @@ export const insertUserSchema = userSchema.omit({
 export type User = z.infer<typeof userSchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 
+// UserSettings Schema
+export const userSettingsSchema = z.object({
+  id: z.string().uuid(),
+  userId: z.string().uuid(),
+  theme: z.enum(["light", "dark", "system"]).default("system"),
+  emailNotifications: z.boolean().default(true),
+  pushNotifications: z.boolean().default(true),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+});
+
+export const insertUserSettingsSchema = userSettingsSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type UserSettings = z.infer<typeof userSettingsSchema>;
+export type InsertUserSettings = z.infer<typeof insertUserSettingsSchema>;
+
+// Notification Schema
+export const notificationSchema = z.object({
+  id: z.string().uuid(),
+  userId: z.string().uuid(),
+  title: z.string(),
+  message: z.string(),
+  type: z.enum(["info", "success", "warning", "error"]).default("info"),
+  isRead: z.boolean().default(false),
+  link: z.string().nullable().optional(),
+  createdAt: z.date().optional(),
+});
+
+export const insertNotificationSchema = notificationSchema.omit({
+  id: true,
+  createdAt: true,
+});
+
+export type Notification = z.infer<typeof notificationSchema>;
+export type InsertNotification = z.infer<typeof insertNotificationSchema>;
+
 // Product
 export const productSchema = z.object({
   id: z.string().uuid(),

@@ -110,8 +110,8 @@ export function AppSidebar({ staffUser }: AppSidebarProps) {
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
-        <div className="flex items-center gap-3 px-2 py-1">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold text-lg shadow-sm border border-primary/20">
+        <div className="flex items-center gap-3 px-2 py-1 relative group">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary font-bold text-lg shadow-sm border border-primary/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-md">
             <ShoppingCart className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
@@ -199,7 +199,7 @@ export function AppSidebar({ staffUser }: AppSidebarProps) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="flex w-full items-center gap-3 rounded-md p-2 hover-elevate"
+              className="flex w-full items-center gap-3 rounded-lg p-2 transition-all duration-200 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
               data-testid="button-user-menu"
             >
               <Avatar className="h-8 w-8">
@@ -212,11 +212,11 @@ export function AppSidebar({ staffUser }: AppSidebarProps) {
                 <span className="text-sm font-medium truncate max-w-[120px]">
                   {staffUser?.name || user?.name || "User"}
                 </span>
-                <span className="text-xs text-muted-foreground capitalize">
+                <span className="text-xs text-muted-foreground capitalize group-hover:text-sidebar-accent-foreground/70 transition-colors">
                   {role}
                 </span>
               </div>
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              <ChevronDown className="h-4 w-4 text-muted-foreground group-hover:text-sidebar-accent-foreground transition-colors" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
