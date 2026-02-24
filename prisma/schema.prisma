@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  admin
+  manager
+  sales
+}
+
+enum Category {
+  networking
+  cctv
+  intercom
+  services
+}
+
+enum SaleStatus {
+  pending
+  completed
+  cancelled
+}
+
+model User {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username  String   @unique
+  password  String
+  name      String
+  role      UserRole @default(sales)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sales Sale[]
+
+  @@map("users")
+}
+
+model Product {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String
+  description       String?
+  sku               String?  @unique
+  category          Category
+  price             Decimal  @db.Decimal(10, 2)
+  costPrice         Decimal? @db.Decimal(10, 2)
+  stockQuantity     Int      @default(0)
+  lowStockThreshold Int      @default(10)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  saleItems SaleItem[]
+
+  @@map("products")
+}
+
+model Service {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  description String?
+  category    Category @default(services)
+  price       Decimal  @db.Decimal(10, 2)
+  duration    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  saleItems SaleItem[]
+
+  @@map("services")
+}
+
+model Sale {
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  saleNumber    String     @unique
+  staffUserId   String     @db.Uuid
+  staffUser     User       @relation(fields: [staffUserId], references: [id])
+  customerName  String?
+  customerPhone String?
+  subtotal      Decimal    @db.Decimal(10, 2)
+  tax           Decimal    @default(0) @db.Decimal(10, 2)
+  discount      Decimal    @default(0) @db.Decimal(10, 2)
+  total         Decimal    @db.Decimal(10, 2)
+  status        SaleStatus @default(completed)
+  notes         String?
+  createdAt     DateTime   @default(now())
+
+  items SaleItem[]
+
+  @@map("sales")
+}
+
+model SaleItem {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  saleId    String   @db.Uuid
+  sale      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  productId String?  @db.Uuid
+  product   Product? @relation(fields: [productId], references: [id])
+  serviceId String?  @db.Uuid
+  service   Service? @relation(fields: [serviceId], references: [id])
+  name      String
+  quantity  Int
+  unitPrice Decimal  @db.Decimal(10, 2)
+  total     Decimal  @db.Decimal(10, 2)
+
+  @@map("sale_items")
+}
+
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json
+  expire DateTime @db.Timestamp()
+
+  @@index([expire], name: "IDX_session_expire")
+  @@map("sessions")
+}

@@ -1,156 +1,125 @@
-import { sql, relations } from "drizzle-orm";
-import { pgTable, text, varchar, integer, decimal, timestamp, pgEnum, boolean } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-// Re-export auth models
-export * from "./models/auth";
-
 // Enums
-export const userRoleEnum = pgEnum("user_role", ["admin", "manager", "sales"]);
-export const categoryEnum = pgEnum("category", ["networking", "cctv", "intercom", "services"]);
-export const saleStatusEnum = pgEnum("sale_status", ["pending", "completed", "cancelled"]);
-
-// Staff users table (separate from auth users for role-based access)
-export const staffUsers = pgTable("staff_users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  authUserId: varchar("auth_user_id").notNull(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  role: userRoleEnum("role").notNull().default("sales"),
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-// Products table
-export const products = pgTable("products", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: text("name").notNull(),
-  description: text("description"),
-  sku: text("sku").unique(),
-  category: categoryEnum("category").notNull(),
-  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
-  costPrice: decimal("cost_price", { precision: 10, scale: 2 }),
-  stockQuantity: integer("stock_quantity").notNull().default(0),
-  lowStockThreshold: integer("low_stock_threshold").notNull().default(10),
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-// Services table
-export const services = pgTable("services", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: text("name").notNull(),
-  description: text("description"),
-  category: categoryEnum("category").notNull().default("services"),
-  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
-  duration: text("duration"),
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-// Sales table
-export const sales = pgTable("sales", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  saleNumber: text("sale_number").notNull().unique(),
-  staffUserId: varchar("staff_user_id").notNull(),
-  customerName: text("customer_name"),
-  customerPhone: text("customer_phone"),
-  subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
-  tax: decimal("tax", { precision: 10, scale: 2 }).notNull().default("0"),
-  discount: decimal("discount", { precision: 10, scale: 2 }).notNull().default("0"),
-  total: decimal("total", { precision: 10, scale: 2 }).notNull(),
-  status: saleStatusEnum("status").notNull().default("completed"),
-  notes: text("notes"),
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
-// Sale items table
-export const saleItems = pgTable("sale_items", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  saleId: varchar("sale_id").notNull(),
-  productId: varchar("product_id"),
-  serviceId: varchar("service_id"),
-  name: text("name").notNull(),
-  quantity: integer("quantity").notNull(),
-  unitPrice: decimal("unit_price", { precision: 10, scale: 2 }).notNull(),
-  total: decimal("total", { precision: 10, scale: 2 }).notNull(),
-});
-
-// Relations
-export const staffUsersRelations = relations(staffUsers, ({ many }) => ({
-  sales: many(sales),
-}));
-
-export const salesRelations = relations(sales, ({ one, many }) => ({
-  staffUser: one(staffUsers, {
-    fields: [sales.staffUserId],
-    references: [staffUsers.id],
-  }),
-  items: many(saleItems),
-}));
-
-export const saleItemsRelations = relations(saleItems, ({ one }) => ({
-  sale: one(sales, {
-    fields: [saleItems.saleId],
-    references: [sales.id],
-  }),
-  product: one(products, {
-    fields: [saleItems.productId],
-    references: [products.id],
-  }),
-  service: one(services, {
-    fields: [saleItems.serviceId],
-    references: [services.id],
-  }),
-}));
-
-// Insert schemas
-export const insertStaffUserSchema = createInsertSchema(staffUsers).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertProductSchema = createInsertSchema(products).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertServiceSchema = createInsertSchema(services).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertSaleSchema = createInsertSchema(sales).omit({
-  id: true,
-  createdAt: true,
-});
-
-export const insertSaleItemSchema = createInsertSchema(saleItems).omit({
-  id: true,
-});
+export const UserRoleEnum = z.enum(["admin", "manager", "sales"]);
+export const CategoryEnum = z.enum(["networking", "cctv", "intercom", "services"]);
+export const SaleStatusEnum = z.enum(["pending", "completed", "cancelled"]);
 
 // Types
-export type StaffUser = typeof staffUsers.$inferSelect;
-export type InsertStaffUser = z.infer<typeof insertStaffUserSchema>;
+export type UserRole = z.infer<typeof UserRoleEnum>;
+export type Category = z.infer<typeof CategoryEnum>;
+export type SaleStatus = z.infer<typeof SaleStatusEnum>;
 
-export type Product = typeof products.$inferSelect;
+// We use string or number for Decimal fields to be flexible with JSON payloads
+const decimalSchema = z.union([z.string(), z.number()]);
+
+// User Schema
+export const userSchema = z.object({
+  id: z.string().uuid(),
+  username: z.string().min(3),
+  password: z.string().min(6), // We'll hash this on the server
+  name: z.string().min(1),
+  role: UserRoleEnum.default("sales"),
+  isActive: z.boolean().default(true),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+});
+
+export const insertUserSchema = userSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type User = z.infer<typeof userSchema>;
+export type InsertUser = z.infer<typeof insertUserSchema>;
+
+// Product
+export const productSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  description: z.string().nullable().optional(),
+  sku: z.string().nullable().optional(),
+  category: CategoryEnum,
+  price: decimalSchema,
+  costPrice: decimalSchema.nullable().optional(),
+  stockQuantity: z.number().default(0),
+  lowStockThreshold: z.number().default(10),
+  isActive: z.boolean().default(true),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+});
+
+export const insertProductSchema = productSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type Product = z.infer<typeof productSchema>;
 export type InsertProduct = z.infer<typeof insertProductSchema>;
 
-export type Service = typeof services.$inferSelect;
+// Service
+export const serviceSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  description: z.string().nullable().optional(),
+  category: CategoryEnum.default("services"),
+  price: decimalSchema,
+  duration: z.string().nullable().optional(),
+  isActive: z.boolean().default(true),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+});
+
+export const insertServiceSchema = serviceSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type Service = z.infer<typeof serviceSchema>;
 export type InsertService = z.infer<typeof insertServiceSchema>;
 
-export type Sale = typeof sales.$inferSelect;
+// Sale
+export const saleSchema = z.object({
+  id: z.string().uuid(),
+  saleNumber: z.string(),
+  staffUserId: z.string().uuid(),
+  customerName: z.string().nullable().optional(),
+  customerPhone: z.string().nullable().optional(),
+  subtotal: decimalSchema,
+  tax: decimalSchema.default(0),
+  discount: decimalSchema.default(0),
+  total: decimalSchema,
+  status: SaleStatusEnum.default("completed"),
+  notes: z.string().nullable().optional(),
+  createdAt: z.date().optional(),
+});
+
+export const insertSaleSchema = saleSchema.omit({
+  id: true,
+  createdAt: true,
+});
+
+export type Sale = z.infer<typeof saleSchema>;
 export type InsertSale = z.infer<typeof insertSaleSchema>;
 
-export type SaleItem = typeof saleItems.$inferSelect;
-export type InsertSaleItem = z.infer<typeof insertSaleItemSchema>;
+// Sale Items
+export const saleItemSchema = z.object({
+  id: z.string().uuid(),
+  saleId: z.string().uuid(),
+  productId: z.string().uuid().nullable().optional(),
+  serviceId: z.string().uuid().nullable().optional(),
+  name: z.string(),
+  quantity: z.number(),
+  unitPrice: decimalSchema,
+  total: decimalSchema,
+});
 
-export type UserRole = "admin" | "manager" | "sales";
-export type Category = "networking" | "cctv" | "intercom" | "services";
+export const insertSaleItemSchema = saleItemSchema.omit({
+  id: true,
+});
+
+export type SaleItem = z.infer<typeof saleItemSchema>;
+export type InsertSaleItem = z.infer<typeof insertSaleItemSchema>;

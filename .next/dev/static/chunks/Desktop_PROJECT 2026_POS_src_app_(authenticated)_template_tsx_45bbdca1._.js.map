@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Jerry/Desktop/PROJECT%202026/POS/src/app/%28authenticated%29/template.tsx"],"sourcesContent":["\"use client\";\r\n\r\nimport { motion } from \"framer-motion\";\r\n\r\nexport default function Template({ children }: { children: React.ReactNode }) {\r\n  return (\r\n    <motion.div\r\n      initial={{ opacity: 0, y: 8, filter: \"blur(4px)\" }}\r\n      animate={{ opacity: 1, y: 0, filter: \"blur(0px)\" }}\r\n      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} // custom easing curve for a premium feel\r\n      style={{ width: \"100%\", height: \"100%\" }}\r\n    >\r\n      {children}\r\n    </motion.div>\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;;AAEA;AAFA;;;AAIe,SAAS,SAAS,EAAE,QAAQ,EAAiC;IAC1E,qBACE,gOAAC,0OAAM,CAAC,GAAG;QACT,SAAS;YAAE,SAAS;YAAG,GAAG;YAAG,QAAQ;QAAY;QACjD,SAAS;YAAE,SAAS;YAAG,GAAG;YAAG,QAAQ;QAAY;QACjD,YAAY;YAAE,UAAU;YAAK,MAAM;gBAAC;gBAAM;gBAAG;gBAAM;aAAE;QAAC;QACtD,OAAO;YAAE,OAAO;YAAQ,QAAQ;QAAO;kBAEtC;;;;;;AAGP;KAXwB"}}]
+}
