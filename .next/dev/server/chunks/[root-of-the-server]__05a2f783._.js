@@ -469,6 +469,75 @@ class DatabaseStorage {
             recentSales: salesData.slice(0, 20)
         };
     }
+    // Settings
+    async getUserSettings(userId) {
+        return __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$PROJECT__2026$2f$SiliconPOS$2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].userSettings.findUnique({
+            where: {
+                userId
+            }
+        }) || undefined;
+    }
+    async createUserSettings(userId, data) {
+        return __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$PROJECT__2026$2f$SiliconPOS$2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].userSettings.create({
+            data: {
+                userId,
+                ...data
+            }
+        });
+    }
+    async updateUserSettings(userId, data) {
+        return __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$PROJECT__2026$2f$SiliconPOS$2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].userSettings.upsert({
+            where: {
+                userId
+            },
+            update: data,
+            create: {
+                userId,
+                ...data
+            }
+        });
+    }
+    // Notifications
+    async getNotifications(userId, limit = 20) {
+        return __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$PROJECT__2026$2f$SiliconPOS$2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].notification.findMany({
+            where: {
+                userId
+            },
+            orderBy: {
+                createdAt: "desc"
+            },
+            take: limit
+        });
+    }
+    async markNotificationAsRead(userId, notificationId) {
+        if (notificationId) {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$PROJECT__2026$2f$SiliconPOS$2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].notification.updateMany({
+                where: {
+                    id: notificationId,
+                    userId
+                },
+                data: {
+                    isRead: true
+                }
+            });
+            return {
+                count: res.count
+            };
+        } else {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$PROJECT__2026$2f$SiliconPOS$2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].notification.updateMany({
+                where: {
+                    userId,
+                    isRead: false
+                },
+                data: {
+                    isRead: true
+                }
+            });
+            return {
+                count: res.count
+            };
+        }
+    }
 }
 const storage = new DatabaseStorage();
 __turbopack_async_result__();
