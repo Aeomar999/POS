@@ -1,0 +1,38 @@
+# SiliconPOS Code Quality & UX Rules
+
+This file serves as the definitive source of truth for all AI agents and human developers working on SiliconPOS.
+
+## 1. Foundational Architecture
+- **Framework:** Next.js 16 (App Router paradigm). Use Server Components by default; opt-in to Client Components with `"use client"` ONLY when interactivity (hooks, state, DOM events) is required.
+- **State:** Keep React state local and minimal. Fetch data mostly in Server Components. For client-side data fetching or mutations, use `@tanstack/react-query`.
+- **Database:** Prisma ORM. Never construct raw SQL unless explicitly required for a complex geospatial or statistical query. Rely on Prisma's type safety.
+
+## 2. Code Quality & Type Safety Rules
+- **TypeScript Strictness:** No `any`. Utilize `zod` heavily. If an object traverses the network boundary (API request/response), it MUST be validated by a Zod schema (e.g., from `shared/schema.ts`).
+- **Function Size:** Keep functions under 50 lines. Extract complex logic to helper utilities.
+- **Naming Conventions:** Use explicit, descriptive variable names. E.g., `calculateTotalWithTax()` not `calcTotal()`. 
+- **Error Handling:** No silent failures (`catch (e) { console.log(e) }`). Use specific exception types, return cohesive API error payloads (`{ error: string, code: string, details: any }`), and display actionable toast notifications to the user.
+
+## 3. The Seven Pillars of Expert UI Design (UX/UI Rules)
+1. **Hierarchy:** One focal point per screen. H1 (40px) → H2 (30px) → H3 (20px) → Body (14px).
+2. **Consistency:** Radix/Shadcn components rule the UI. Never custom-build a generic component (like a dropdown) if Shadcn already provides one. Use semantic colors: `--color-error` (red), `--color-success` (green).
+3. **Progressive Disclosure:** Hide complexity. Use Modals for critical isolated tasks, Accordions for dense settings.
+4. **Clarity:** Action verb buttons ("Process Sale" not "Submit"). Descriptive icons.
+5. **Minimalism:** Whitespace is active. Use the 8px underlying grid system (`space-x-4`, `p-6`). Remove unnecessary borders and visual noise.
+6. **Emotional Design:** Use micro-interactions (`framer-motion` layout animations). Provide smooth state transitions.
+7. **User Control:** Always confirm destructive actions (e.g., "Are you sure you want to delete Product X?"). Provide extensive undo capabilities where practical.
+
+## 4. Security
+- NEVER commit secrets. 
+- All API routes handling sensitive mutations MUST verify the user's session role (Admin/Manager).
+- Implement input sanitization automatically via the Zod validation layer.
+- Apply Rate Limiting to standard auth endpoints to prevent brute-force attacks.
+
+## 5. Testing Standards
+- Aim for high confidence. Test behavior, not implementation (use React Testing Library).
+- Create a complete test suite covering happy paths, edge cases, and explicit error scenarios.
+- Name tests descriptively: `it('prevents checkout when stock is insufficient', () ...)`
+
+## 6. Iteration Strategy
+- Do not plan monolithically without verifying. Break complex features into digestible chunks.
+- When generating new features, write the plan, build the database schema adjustments, generate the API routes, and FINALLY wrap it with the Client UI.
